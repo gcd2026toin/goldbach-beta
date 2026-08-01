@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "../ThemeContext";
 import { TopBar } from "../components/TopBar";
@@ -96,12 +96,17 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <TrophyUnlockToast trophies={trophyEngine.newlyUnlocked} onDismiss={trophyEngine.dismissNewlyUnlocked} />
       <View style={styles.topSection}>
-        <TopBar gameIndex={session.gameIndex} myScore={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} onBack={onExit} onRulesPress={() => setRulesVisible(true)} />
+        <TopBar gameIndex={session.gameIndex} myScore={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} onBack={onExit} />
         <OpponentRow bots={bots} state={session.state} cumulativeScores={session.cumulativeScores} forcedPassIds={session.forcedPassIds} />
       </View>
 
       <View style={styles.middleSection}>
-        <FieldArea field={session.state.field} clearedSnapshot={session.clearedFieldSnapshot} playAnimation={playAnimation} />
+        <View style={styles.fieldContainer}>
+          <FieldArea field={session.state.field} clearedSnapshot={session.clearedFieldSnapshot} playAnimation={playAnimation} />
+          <Pressable onPress={() => setRulesVisible(true)} hitSlop={8} style={styles.rulesButton}>
+            <Text style={[styles.rulesButtonText, { color: theme.colors.textSecondary }]}>?</Text>
+          </Pressable>
+        </View>
         {pendingAgariName && (
           <Text
             style={[
@@ -162,6 +167,25 @@ const styles = StyleSheet.create({
   middleSection: {
     flex: 1, // 上下の間の余白をここが吸収し、場を画面中央に据える
     justifyContent: "center",
+  },
+  fieldContainer: {
+    position: "relative",
+    alignItems: "center",
+  },
+  rulesButton: {
+    position: "absolute",
+    bottom: 12,
+    right: 12,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    borderWidth: 0.5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  rulesButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
   },
   bottomSection: {
     // 手札とアクションバーは下部に固定

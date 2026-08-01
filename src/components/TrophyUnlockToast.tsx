@@ -50,9 +50,8 @@ const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
     top: 8,
-    left: 0,
-    right: 0,
-    alignItems: "center",
+    right: 8,
+    alignItems: "flex-end",
     zIndex: 20,
   },
   card: {

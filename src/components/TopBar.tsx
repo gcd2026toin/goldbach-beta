@@ -7,7 +7,6 @@ interface TopBarProps {
   gameIndex: number; // 0-indexed
   myScore: number;
   onBack?: () => void;
-  onRulesPress?: () => void;
 }
 
 /**
@@ -15,7 +14,7 @@ interface TopBarProps {
  * 1本の細いバーの中に収めることで画面を窮屈にしない設計。
  * スコア表示の右下に「?」ボタンを配置して、ルールモーダルを開く。
  */
-export function TopBar({ gameIndex, myScore, onBack, onRulesPress }: TopBarProps) {
+export function TopBar({ gameIndex, myScore, onBack }: TopBarProps) {
   const theme = useTheme();
   const scoreColor = myScore > 0 ? theme.colors.accentGold : myScore < 0 ? theme.colors.textSecondary : theme.colors.textPrimary;
 
@@ -44,9 +43,6 @@ export function TopBar({ gameIndex, myScore, onBack, onRulesPress }: TopBarProps
             {myScore > 0 ? `+${myScore}` : myScore}
           </Text>
         </View>
-        <Pressable onPress={onRulesPress} hitSlop={8} style={styles.rulesButton}>
-          <Text style={[styles.rulesButtonText, { color: theme.colors.textSecondary }]}>?</Text>
-        </Pressable>
       </View>
     </View>
   );
@@ -81,17 +77,5 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 10,
     paddingVertical: 4,
-  },
-  rulesButton: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 0.5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rulesButtonText: {
-    fontSize: 16,
-    fontWeight: "600",
   },
 });
