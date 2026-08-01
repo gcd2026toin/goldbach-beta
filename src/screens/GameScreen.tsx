@@ -49,6 +49,8 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
     ? { nonce: session.playAnimation.nonce, ...computeOrigin(session.playAnimation.playerId, bots) }
     : null;
 
+  const currentPlayerName = players.find((p) => p.id === session.state.currentPlayerId)?.name || "不明";
+
   // 1ゲームが終わった(結果が確定した)瞬間に1回だけトロフィー判定する
   const evaluatedGameRef = useRef<number>(-1);
   useEffect(() => {
@@ -124,6 +126,7 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
           humanPassed={human.passed}
           humanPassWasForced={session.forcedPassIds.has(HUMAN_PLAYER_ID)}
           isForcedPassPending={session.isForcedPassPending}
+          currentPlayerName={currentPlayerName}
         />
       </View>
 

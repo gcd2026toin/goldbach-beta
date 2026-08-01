@@ -12,6 +12,7 @@ interface ActionBarProps {
   humanPassed: boolean;
   humanPassWasForced: boolean;
   isForcedPassPending: boolean;
+  currentPlayerName: string;
 }
 
 export function ActionBar({
@@ -24,6 +25,7 @@ export function ActionBar({
   humanPassed,
   humanPassWasForced,
   isForcedPassPending,
+  currentPlayerName,
 }: ActionBarProps) {
   const theme = useTheme();
 
@@ -44,7 +46,7 @@ export function ActionBar({
           </Text>
         )}
         <Text style={{ color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, fontSize: 23 }}>
-          {isForcedPassPending ? "出せる手がないためパスします…" : "相手の手番です…"}
+          {isForcedPassPending ? "出せる手がないためパスします…" : `${currentPlayerName}の番です…`}
         </Text>
       </View>
     );
