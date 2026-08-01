@@ -1,0 +1,82 @@
+import React from "react";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../ThemeContext";
+import { COLUMN_SECTIONS, COLUMN_TITLE } from "../content/columnContent";
+
+export function ColumnModal({ visible, onClose }: { visible: boolean; onClose: () => void }) {
+  const theme = useTheme();
+
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <View style={styles.header}>
+          <Text style={[styles.title, { color: theme.colors.textPrimary, fontFamily: theme.typography.display.fontFamily }]}>
+            コラム
+          </Text>
+          <Pressable onPress={onClose} hitSlop={12}>
+            <Text style={{ color: theme.colors.accentGold, fontFamily: theme.typography.body.fontFamily, fontSize: 20 }}>閉じる</Text>
+          </Pressable>
+        </View>
+
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <Text
+            style={[styles.columnTitle, { color: theme.colors.accentGold, fontFamily: theme.typography.display.fontFamily }]}
+          >
+            {COLUMN_TITLE}
+          </Text>
+
+          {COLUMN_SECTIONS.map((section, i) => (
+            <View key={i} style={styles.section}>
+              <Text
+                style={[styles.sectionHeading, { color: theme.colors.textPrimary, fontFamily: theme.typography.body.fontFamily }]}
+              >
+                {section.heading}
+              </Text>
+              <Text
+                style={[styles.sectionBody, { color: theme.colors.textPrimary, fontFamily: theme.typography.body.fontFamily }]}
+              >
+                {section.body}
+              </Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    </Modal>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 56,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  title: {
+    fontSize: 30,
+  },
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  columnTitle: {
+    fontSize: 22,
+    marginBottom: 18,
+  },
+  section: {
+    marginBottom: 22,
+  },
+  sectionHeading: {
+    fontSize: 22,
+    fontWeight: "700",
+    marginBottom: 8,
+  },
+  sectionBody: {
+    fontSize: 20,
+    lineHeight: 25,
+  },
+});
