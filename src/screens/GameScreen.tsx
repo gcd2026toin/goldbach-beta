@@ -9,6 +9,7 @@ import { HandRow } from "../components/HandRow";
 import { ActionBar } from "../components/ActionBar";
 import { RoundSummaryOverlay } from "../components/RoundSummaryOverlay";
 import { TrophyUnlockToast } from "../components/TrophyUnlockToast";
+import { RulesModal } from "../components/RulesModal";
 import { SetSummaryScreen } from "./SetSummaryScreen";
 import { PlayerConfig, useGameSession, HUMAN_PLAYER_ID, GAMES_PER_SET } from "../state/useGameSession";
 import { TrophyEngine } from "../trophies/useTrophyEngine";
@@ -36,6 +37,7 @@ function computeOrigin(playerId: number, bots: PlayerConfig[]): { originX: numbe
 
 export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
   const theme = useTheme();
+  const [rulesVisible, setRulesVisible] = React.useState(false);
   const session = useGameSession(players);
   const bots = players.filter((p) => p.isBot);
   const human = session.state.players.find((p) => p.id === HUMAN_PLAYER_ID)!;
@@ -92,7 +94,7 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <TrophyUnlockToast trophies={trophyEngine.newlyUnlocked} onDismiss={trophyEngine.dismissNewlyUnlocked} />
       <View style={styles.topSection}>
-        <TopBar gameIndex={session.gameIndex} myScore={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} onBack={onExit} />
+        <TopBar gameIndex={session.gameIndex} myScore={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} onBack={onExit} onRulesPress={() => setRulesVisible(true)} />
         <OpponentRow bots={bots} state={session.state} cumulativeScores={session.cumulativeScores} forcedPassIds={session.forcedPassIds} />
       </View>
 
@@ -138,6 +140,8 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
           humanHandBeforeDiscard={session.roundSummary.humanHandBeforeDiscard}
         />
       )}
+
+      <RulesModal visible={rulesVisible} onClose={() => setRulesVisible(false)} />
     </SafeAreaView>
   );
 }
