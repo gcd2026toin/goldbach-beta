@@ -25,7 +25,7 @@ export const TROPHY_DEFS: TrophyDef[] = [
   {
     id: "perfect_set",
     title: "全勝セット",
-    description: "1セットの3ゲームすべてに勝利する",
+    description: "1セット中の3ゲームすべてに勝利する",
   },
   {
     id: "composite_table_finish",
@@ -33,19 +33,14 @@ export const TROPHY_DEFS: TrophyDef[] = [
     description: "約数の多いテーブルであがり、高得点を得る",
   },
   {
-    id: "beat_hard_bot",
-    title: "上級討伐",
-    description: "上級bot3体を相手にセットを制する",
+    id: "divisor_finish",
+    title: "ディバイザー",
+    description: "公約数出しであがって勝利する",
   },
   {
     id: "coprime_finish",
-    title: "互いに素の閃き",
+    title: "アンチディバイザー",
     description: "3枚の互いに素な組であがって勝利する",
-  },
-  {
-    id: "divisor_finish",
-    title: "約数の匠",
-    description: "公約数出しであがって勝利する",
   },
   {
     id: "five_sets",
@@ -53,8 +48,18 @@ export const TROPHY_DEFS: TrophyDef[] = [
     description: "累計3セット勝利する",
   },
   {
+    id: "beat_hard_bot",
+    title: "上級討伐",
+    description: "上級bot3体を相手にセットを制する",
+  },
+  {
+    id: "point_getter",
+    title: "ポイントゲッター",
+    description: "1ゲームで100点以上を獲得する",
+  },
+  {
     id: "no_pass_win",
-    title: "無敗の一手",
+    title: "見敵必殺",
     description: "一度もパスせずに1ゲームに勝利する",
     hidden: true,
   },
@@ -74,12 +79,6 @@ export const TROPHY_DEFS: TrophyDef[] = [
     id: "comeback_win",
     title: "起死回生",
     description: "1セット中のあるゲームを終えて最下位(同率含め)でありながら、そのセットを制する",
-    hidden: true,
-  },
-  {
-    id: "point_getter",
-    title: "ポイントゲッター",
-    description: "1ゲームで100点以上を獲得する",
     hidden: true,
   },
 ];
