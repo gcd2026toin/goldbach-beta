@@ -49,9 +49,10 @@ export function TrophyUnlockToast({ trophies, onDismiss }: TrophyUnlockToastProp
 const styles = StyleSheet.create({
   wrapper: {
     position: "absolute",
-    top: 8,
-    right: 8,
+    top: 56,
+    right: 0,
     alignItems: "flex-end",
+    paddingRight: 8,
     zIndex: 20,
   },
   card: {

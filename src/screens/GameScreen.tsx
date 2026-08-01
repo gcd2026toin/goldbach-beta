@@ -101,12 +101,10 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
       </View>
 
       <View style={styles.middleSection}>
-        <View style={styles.fieldContainer}>
-          <FieldArea field={session.state.field} clearedSnapshot={session.clearedFieldSnapshot} playAnimation={playAnimation} />
-          <Pressable onPress={() => setRulesVisible(true)} hitSlop={8} style={styles.rulesButton}>
-            <Text style={[styles.rulesButtonText, { color: theme.colors.textSecondary }]}>?</Text>
-          </Pressable>
-        </View>
+        <FieldArea field={session.state.field} clearedSnapshot={session.clearedFieldSnapshot} playAnimation={playAnimation} />
+        <Pressable onPress={() => setRulesVisible(true)} hitSlop={8} style={styles.rulesButton}>
+          <Text style={[styles.rulesButtonText, { color: theme.colors.textSecondary }]}>?</Text>
+        </Pressable>
         {pendingAgariName && (
           <Text
             style={[
@@ -167,10 +165,6 @@ const styles = StyleSheet.create({
   middleSection: {
     flex: 1, // 上下の間の余白をここが吸収し、場を画面中央に据える
     justifyContent: "center",
-  },
-  fieldContainer: {
-    position: "relative",
-    alignItems: "center",
   },
   rulesButton: {
     position: "absolute",
