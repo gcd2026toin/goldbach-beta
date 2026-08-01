@@ -55,7 +55,7 @@ function findMatchingAction(legal: Action[], selected: Card[]): Action | undefin
   });
 }
 
-export function useGameSession(playerConfigs: PlayerConfig[]) {
+export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean = false) {
   const [gameIndex, setGameIndex] = useState(0);
   const [state, setState] = useState<GameState>(() =>
     initGame(
@@ -177,6 +177,7 @@ export function useGameSession(playerConfigs: PlayerConfig[]) {
   // 場が空でリードすら作れない特殊ケース、あがり後の破棄待ち、bot自動着手、
   // および人間の自動パスをまとめて処理する
   useEffect(() => {
+    if (isPaused) return; // ルールモーダル表示中は一時停止
     if (state.finished || processingRef.current) return;
 
     if (state.pendingAgari) {
@@ -247,7 +248,7 @@ export function useGameSession(playerConfigs: PlayerConfig[]) {
       }, HUMAN_AUTO_PASS_DELAY_MS);
       return () => clearTimeout(timer);
     }
-  }, [state, legalActions, hasNonPassOption, playerConfigs, finalizeGameIfNeeded, scheduleFinalize, flashClearedField, triggerPlayAnimation]);
+  }, [state, legalActions, hasNonPassOption, isPaused, playerConfigs, finalizeGameIfNeeded, scheduleFinalize, flashClearedField, triggerPlayAnimation]);
 
   const playSelected = useCallback(() => {
     if (!matchingAction) return;

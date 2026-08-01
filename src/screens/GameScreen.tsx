@@ -38,7 +38,8 @@ function computeOrigin(playerId: number, bots: PlayerConfig[]): { originX: numbe
 export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
   const theme = useTheme();
   const [rulesVisible, setRulesVisible] = React.useState(false);
-  const session = useGameSession(players);
+  const isPaused = rulesVisible; // ルールモーダル表示中は試合を一時停止
+  const session = useGameSession(players, isPaused);
   const bots = players.filter((p) => p.isBot);
   const human = session.state.players.find((p) => p.id === HUMAN_PLAYER_ID)!;
   const pendingAgariName = session.state.pendingAgari
