@@ -1,0 +1,27 @@
+﻿# Dependencies
+node_modules/
+.expo/
+.gradle/
+
+# Build outputs
+dist/
+build/
+*.apk
+*.aar
+*.so
+*.dylib
+*.dll
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Parent directory (user profile) - IMPORTANT
+../*
+!../goldbach-cardgame/
