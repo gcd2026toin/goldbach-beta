@@ -17,10 +17,20 @@ interface TrophyUnlockToastProps {
 export function TrophyUnlockToast({ trophies, onDismiss }: TrophyUnlockToastProps) {
   const theme = useTheme();
 
+  // ハプティクスフィードバック
   useEffect(() => {
     if (trophies.length === 0) return;
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success).catch(() => {});
   }, [trophies]);
+
+  // 3秒後に自動的に閉じる
+  useEffect(() => {
+    if (trophies.length === 0) return;
+    const timer = setTimeout(() => {
+      onDismiss();
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [trophies, onDismiss]);
 
   if (trophies.length === 0) return null;
 
