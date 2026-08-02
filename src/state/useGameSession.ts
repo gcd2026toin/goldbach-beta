@@ -177,7 +177,11 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
   // 場が空でリードすら作れない特殊ケース、あがり後の破棄待ち、bot自動着手、
   // および人間の自動パスをまとめて処理する
   useEffect(() => {
-    if (isPaused) return; // ルールモーダル表示中は一時停止
+    if (isPaused) {
+      // 一時停止中はタイマーをクリア。再開時に正常に動作するよう状態をリセット
+      processingRef.current = false;
+      return;
+    }
     if (state.finished || processingRef.current) return;
 
     if (state.pendingAgari) {
