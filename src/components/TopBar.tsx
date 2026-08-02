@@ -25,7 +25,7 @@ export function TopBar({ gameIndex, myScore, onBack }: TopBarProps) {
       </Pressable>
 
       <Text style={[styles.center, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
-        {gameIndex + 1}ゲーム目/{GAMES_PER_SET}
+        {gameIndex + 1}ゲーム目/{GAMES_PER_SET}ゲーム
       </Text>
 
       <View style={styles.scoreSlot}>

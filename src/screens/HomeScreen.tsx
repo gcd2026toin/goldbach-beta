@@ -82,7 +82,7 @@ export function HomeScreen({ onStart, trophyEngine, botDifficulties, onBotDiffic
       <View style={styles.linkRow}>
         <Pressable onPress={() => setRulesVisible(true)} style={styles.rulesLink} hitSlop={8}>
           <Text style={{ color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, fontSize: 20 }}>
-            ルールを見る
+            ルール
           </Text>
         </Pressable>
         <Pressable onPress={() => setTrophiesVisible(true)} style={styles.rulesLink} hitSlop={8}>
