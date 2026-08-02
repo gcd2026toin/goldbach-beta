@@ -75,7 +75,7 @@ export function HomeScreen({ onStart, trophyEngine, botDifficulties, onBotDiffic
         style={[styles.startButton, { backgroundColor: theme.colors.accentGold, borderRadius: theme.radius.control }]}
       >
         <Text style={{ color: theme.colors.onAccentGold, fontFamily: theme.typography.body.fontFamily, fontSize: 24 }}>
-          セットを開始
+          スタート
         </Text>
       </Pressable>
 
