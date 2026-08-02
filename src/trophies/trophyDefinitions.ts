@@ -19,12 +19,12 @@ export const TROPHY_DEFS: TrophyDef[] = [
   },
   {
     id: "set_win",
-    title: "覇者",
+    title: "チャンピオン",
     description: "1セット(3ゲーム)を制する",
   },
   {
     id: "perfect_set",
-    title: "全勝セット",
+    title: "パーフェクトゲーム",
     description: "1セット中の3ゲームすべてに勝利する",
   },
   {

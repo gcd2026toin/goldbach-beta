@@ -92,7 +92,7 @@ export function TrophyListModal({
                       marginTop: 2,
                     }}
                   >
-                    {shouldConceal ? "獲得すると条件が明らかになります" : t.description}
+                    {shouldConceal ? "未獲得" : t.description}
                   </Text>
                 </View>
               </View>

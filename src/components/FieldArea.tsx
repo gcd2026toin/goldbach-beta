@@ -106,7 +106,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation }: FieldAreaPr
       >
         {displayCards.length === 0 ? (
           <Text style={[styles.empty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
-            場が空です。2〜3枚出して始めましょう
+            場が空です
           </Text>
         ) : (
           <>

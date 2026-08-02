@@ -37,12 +37,12 @@ export function RoundSummaryOverlay({
         <View style={[styles.card, { backgroundColor: theme.colors.background, borderRadius: theme.radius.sheet }]}>
           <ScrollView contentContainerStyle={styles.scrollContent}>
             <Text style={[styles.title, { color: theme.colors.textPrimary, fontFamily: theme.typography.display.fontFamily }]}>
-              {winnerId === null ? "ステイルメイト" : `${players.find((p) => p.id === winnerId)?.name} の勝ち`}
+              {winnerId === null ? "デッドロック" : `${players.find((p) => p.id === winnerId)?.name} の勝ち`}
             </Text>
             <Text
               style={{ color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, fontSize: 21, marginBottom: 16 }}
             >
-              {gameIndex + 1}戦目の結果
+              {gameIndex + 1}ゲーム目の結果
             </Text>
 
             {players.map((p) => {

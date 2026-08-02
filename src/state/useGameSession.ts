@@ -23,7 +23,7 @@ export interface WinMethod {
 
 interface RoundSummary {
   gameIndex: number; // 0-indexed
-  winnerId: number | null; // null = ステイルメイト
+  winnerId: number | null; // null = デッドロック
   scoresThisGame: Record<number, number>;
   humanPassedThisGame: boolean;
   winMethod: WinMethod | null; // winnerIdが人間のときのみ値を持つ
@@ -145,7 +145,7 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
   );
 
   // あがりが発生してから一定時間後に結果(リザルト)を表示する。
-  // ステイルメイト終了(誰もあがれない)にはこの遅延を適用せず即時表示する。
+  // デッドロック終了(誰もあがれない)にはこの遅延を適用せず即時表示する。
   const scheduleFinalize = useCallback(
     (finishedState: GameState, delayMs: number) => {
       if (!finishedState.finished) return;
@@ -205,7 +205,7 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
       const timer = setTimeout(() => {
         const next = forceSkipLead(state);
         setState(next);
-        finalizeGameIfNeeded(next); // ステイルメイト終了はあがりではないため遅延しない
+        finalizeGameIfNeeded(next); // デッドロック終了はあがりではないため遅延しない
         processingRef.current = false;
       }, FORCE_SKIP_DELAY_MS);
       return () => clearTimeout(timer);
@@ -220,7 +220,7 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
         if (action === null) {
           const next = forceSkipLead(state);
           setState(next);
-          finalizeGameIfNeeded(next); // ステイルメイト終了はあがりではないため遅延しない
+          finalizeGameIfNeeded(next); // デッドロック終了はあがりではないため遅延しない
         } else {
           const result = applyAction(state, state.currentPlayerId, action);
           if (action.type === "pass") {

@@ -104,7 +104,7 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
       <View style={styles.middleSection}>
         <FieldArea field={session.state.field} clearedSnapshot={session.clearedFieldSnapshot} playAnimation={playAnimation} />
         <Pressable onPress={() => setRulesVisible(true)} hitSlop={8} style={styles.rulesButton}>
-          <Text style={[styles.rulesButtonText, { color: theme.colors.textSecondary }]}>?</Text>
+          <Text style={[styles.rulesButtonText, { color: theme.colors.accentGold }]}>?</Text>
         </Pressable>
         {pendingAgariName && (
           <Text
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
     width: 28,
     height: 28,
     borderRadius: 14,
-    borderWidth: 0.5,
+    borderWidth: 0.7,
     alignItems: "center",
     justifyContent: "center",
   },
   rulesButtonText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "600",
   },
   bottomSection: {

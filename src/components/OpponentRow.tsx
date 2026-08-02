@@ -53,7 +53,7 @@ export function OpponentRow({ bots, state, cumulativeScores, forcedPassIds }: Op
             </Text>
             {hasPassed ? (
               <Text style={[styles.passedLabel, { color: theme.colors.accentGold, fontFamily: theme.typography.body.fontFamily }]}>
-                {wasForcedPass ? "手なしパス" : "パス"}
+                {wasForcedPass ? "パス" : "パス"}
               </Text>
             ) : (
               <Text style={[styles.difficulty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>

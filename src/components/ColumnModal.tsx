@@ -78,19 +78,19 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   columnTitle: {
-    fontSize: 22,
+    fontSize: 25,
     marginBottom: 18,
   },
   section: {
     marginBottom: 22,
   },
   sectionHeading: {
-    fontSize: 18,
+    fontSize: 25,
     fontWeight: "700",
     marginBottom: 8,
   },
   sectionBody: {
-    fontSize: 16,
+    fontSize: 22,
     lineHeight: 25,
   },
   linkSection: {

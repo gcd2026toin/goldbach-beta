@@ -28,7 +28,7 @@ export function TrophyUnlockToast({ trophies, onDismiss }: TrophyUnlockToastProp
     <View style={styles.wrapper} pointerEvents="box-none">
       <View style={[styles.card, { backgroundColor: theme.colors.background, borderColor: theme.colors.accentGold }]}>
         <Text style={{ color: theme.colors.accentGold, fontFamily: theme.typography.display.fontFamily, fontSize: 18 }}>
-          トロフィー達成！
+          トロフィー獲得！
         </Text>
         {trophies.map((t) => (
           <Text
