@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   scoreBadge: {
     flexDirection: "row",
     alignItems: "baseline",
-    borderWidth: 0.5,
+    borderWidth: 0.8,
     borderRadius: 14,
     paddingHorizontal: 10,
     paddingVertical: 4,
