@@ -14,11 +14,7 @@
 ### ステップ 1: ユーザー画像を用意
 **状態**: ⏳ 待機中（あなたが画像を提供する）
 
-必要なファイル（サイズ: 1024×1024 px）:
-- `icon.png` - 全プラットフォーム共通アイコン（背景あり）
-- `android-icon-foreground.png` - Android前景（背景なし・透明）
-- `android-icon-background.png` - Android背景（単色・`#FAF6EE` 推奨）
-- `android-icon-monochrome.png` - モノクロ版（背景なし・グレースケール）
+必要なファイル:
 - `favicon.png` - Web用（192×192 px 以上）
 
 ### ステップ 2: app.json 設定
@@ -58,36 +54,14 @@ eas build --platform android
 
 ```
 assets/
-├── icon.png                        (1024×1024, 背景あり)
-├── android-icon-foreground.png     (1024×1024, 透明背景)
-├── android-icon-background.png     (1024×1024, 単色)
-├── android-icon-monochrome.png     (1024×1024, グレースケール・透明)
 ├── favicon.png                     (192×192 以上)
-└── splash-icon.png                 (1024×1024)
 ```
-
-### 各ファイルの役割
-
-| ファイル | 用途 | 背景 | Android適応型 | 優先度 |
-|---------|------|------|---------|--------|
-| icon.png | 全プラットフォーム | 不透明 | × | ⭐⭐⭐ |
-| android-icon-foreground.png | ロゴ層 | 透明 | ✓ | ⭐⭐⭐ |
-| android-icon-background.png | 背景層 | 単色 | ✓ | ⭐⭐⭐ |
-| android-icon-monochrome.png | グレースケール | 透明 | ✓ | ⭐⭐ |
-| favicon.png | Web用 | 不透明 | × | ⭐ |
-| splash-icon.png | スプラッシュ | 不透明 | × | ⭐ |
 
 ### 配置手順
 
 1. **画像ファイルをダウンロード** (あなたが用意)
-2. **`assets/` フォルダに配置**
-   ```bash
-   cp my-icon.png ./assets/icon.png
-   cp my-foreground.png ./assets/android-icon-foreground.png
-   # ... 他のファイルも同様
-   ```
-3. **app.json を確認** (既に設定済み)
-4. **ビルドして確認**
+2. **`assets/` フォルダに配置**(名前は"favicon.png")
+
 
 ---
 
@@ -131,7 +105,7 @@ assets/
 
 ```bash
 # Expoサーバー起動
-cd goldbach-app
+cd goldbach-cardgame
 npx expo start
 
 # スマホで Expo Go アプリを開く
@@ -141,15 +115,6 @@ npx expo start
 # → リアルタイムに色が切り替わる
 ```
 
-### APK インストール後
-
-```bash
-# ビルド（EAS Build）
-eas build --platform android --profile preview
-
-# ビルド完了後、APKをスマホにインストール
-
-# スマホ設定 → 表示/照度 → ダークモード確認
 ```
 
 ### 確認チェックリスト
@@ -262,12 +227,10 @@ dark: {
 
 ## 🚀 最終チェックリスト
 
-- [ ] ユーザー画像を5ファイル用意（1024×1024 × 4 + 192×192 × 1）
+- [ ] ユーザー画像を用意（192×192 × 1）
 - [ ] `assets/` フォルダに配置
 - [ ] `app.json` 確認（修正版使用）
 - [ ] ローカルテスト: `npx expo start` で ライト/ダーク両方確認
-- [ ] APK ビルド: `eas build --platform android`
-- [ ] スマホにインストール
 - [ ] ダークモード ON/OFF で色が切り替わることを確認
 - [ ] トランプカードが両モード同じ色なことを確認
 - [ ] 高校文化祭で頒布！

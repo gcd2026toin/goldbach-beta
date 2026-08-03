@@ -23,15 +23,12 @@
 ```
 assets/
 ├── icon.png                        ← あなたの画像に置き換え
-├── android-icon-foreground.png     ← あなたの画像に置き換え
-├── android-icon-background.png     ← あなたの画像に置き換え
-├── android-icon-monochrome.png     ← あなたの画像に置き換え
 └── favicon.png                     ← あなたの画像に置き換え（192×192以上）
 ```
 
 ### ステップ 2: ローカルテスト
 ```bash
-cd goldbach-app
+cd goldbach-cardgame
 npm install
 npx expo start
 
@@ -39,15 +36,6 @@ npx expo start
 # スマホ設定でダークモード ON/OFF → リアルタイムに色が切り替わる
 ```
 
-### ステップ 3: APK ビルド
-```bash
-eas build --platform android --profile preview
-```
-
-### ステップ 4: スマホにインストール
-ビルド完了後、APKをスマホにインストール
-
----
 
 ## 📋 動作確認チェックリスト
 
@@ -75,7 +63,6 @@ eas build --platform android --profile preview
 
 このフォルダに含まれているドキュメント:
 - **`ICON_AND_THEME_GUIDE.md`** ← 最初に読むやつ
-- **`ICON_SETUP.md`** - アイコン設定の詳細
 - **`THEME_COLORS.md`** - ダークモード色の詳細
 - **`ASSETS_README.md`** - assets フォルダ構成ガイド
 
@@ -117,7 +104,7 @@ A: `src/theme.ts` を修正してください
 ## 📁 プロジェクト構成
 
 ```
-goldbach-complete/
+goldbach-cardgame/
 ├── App.tsx                     ← 修正済み（Bot難度保持）
 ├── app.json                    ← 修正済み（ダークモード対応）
 ├── src/
@@ -130,8 +117,6 @@ goldbach-complete/
 │   ├── trophies/               ← トロフィーシステム
 │   └── ...
 ├── assets/
-│   ├── icon.png                ← 置き換え予定
-│   ├── android-icon-*.png      ← 置き換え予定
 │   └── favicon.png             ← 置き換え予定
 ├── package.json                ← そのまま使用
 └── [ドキュメント各種]
@@ -145,8 +130,7 @@ goldbach-complete/
 2. **`npm install`** (初回のみ)
 3. **`npx expo start`** でテスト
 4. **ダークモード ON/OFF で確認**
-5. **`eas build --platform android`** でビルド
-6. **高校文化祭で頒布！** 🎉
+5. **高校文化祭で頒布！** 🎉
 
 ---
 
