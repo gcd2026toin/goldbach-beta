@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
   tableTop: {
     width: "95%",
     maxWidth: 380,
-    height: 190, // 内容によらず常に最大サイズで固定し、枠が動いたり縮んだりしないようにする
+    height: 200, // 内容によらず常に最大サイズで固定し、枠が動いたり縮んだりしないようにする
     paddingVertical: 18,
     paddingHorizontal: 10,
     borderBottomWidth: 5,
