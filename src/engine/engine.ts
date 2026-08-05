@@ -88,8 +88,36 @@ function countNonPassed(state: GameState): number {
   return state.players.filter((p) => !p.passed).length;
 }
 
+function cloneCard(c: Card): Card {
+  return { suit: c.suit, rank: c.rank };
+}
+
+// JSON.stringify/parseは手軽だが、上級botのmaxN探索では1手ごとに何度もstateを
+// クローンするためコストが無視できない。同じ結果を返す手動のディープコピーに置き換えて高速化する。
 function cloneState(state: GameState): GameState {
-  return JSON.parse(JSON.stringify(state));
+  return {
+    players: state.players.map((p) => ({
+      id: p.id,
+      name: p.name,
+      isBot: p.isBot,
+      hand: p.hand.map(cloneCard),
+      passed: p.passed,
+    })),
+    turnOrder: [...state.turnOrder],
+    field: {
+      cards: state.field.cards.map(cloneCard),
+      score: state.field.score,
+      table: state.field.table,
+      lastPlayCount: state.field.lastPlayCount,
+    },
+    currentPlayerId: state.currentPlayerId,
+    finished: state.finished,
+    winnerId: state.winnerId,
+    consecutiveLeadFailures: state.consecutiveLeadFailures,
+    pendingAgari: state.pendingAgari ? { ...state.pendingAgari } : null,
+    lastClearedField: state.lastClearedField.map(cloneCard),
+    log: state.log.slice(),
+  };
 }
 
 export function applyAction(state: GameState, playerId: number, action: Action): ApplyResult {

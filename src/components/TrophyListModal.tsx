@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../ThemeContext";
-import { TrophyDef } from "../trophies/trophyDefinitions";
+import { TrophyDef, TROPHY_DEFS } from "../trophies/trophyDefinitions";
 
 interface TrophyListModalProps {
   visible: boolean;
@@ -11,6 +11,15 @@ interface TrophyListModalProps {
   totalSetsPlayed: number;
   totalSetsWon: number;
   totalGamesWon: number;
+}
+
+/**
+ * トランプの序列を返す（1番目=A, 2番目=2, ..., 10番目=10, 11番目=J, 12番目=Q, 13番目=K）
+ */
+function getTrumpRank(trophyIndex: number): string {
+  const rank = (trophyIndex % 13) + 1;
+  const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+  return ranks[rank - 1];
 }
 
 export function TrophyListModal({
@@ -58,10 +67,11 @@ export function TrophyListModal({
         )}
 
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          {allTrophies.map((t) => {
+          {allTrophies.map((t, index) => {
             const unlocked = unlockedIds.includes(t.id);
             // 隠しトロフィーは獲得するまでタイトル・条件を伏せる。それ以外は未獲得でも常に表示する。
             const shouldConceal = t.hidden && !unlocked;
+            const trumpRank = getTrumpRank(index);
             return (
               <View
                 key={t.id}
@@ -78,7 +88,9 @@ export function TrophyListModal({
                     },
                   ]}
                 >
-                  <Text style={{ fontSize: 20 }}>{unlocked ? "★" : "?"}</Text>
+                  <Text style={{ fontSize: 18, fontWeight: "bold", color: unlocked ? "#000" : "#ccc" }}>
+                    {unlocked ? trumpRank : "?"}
+                  </Text>
                 </View>
                 <View style={styles.rowText}>
                   <Text style={{ color: theme.colors.textPrimary, fontFamily: theme.typography.body.fontFamily, fontSize: 17 }}>
