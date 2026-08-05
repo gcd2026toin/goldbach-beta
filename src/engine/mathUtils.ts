@@ -80,3 +80,29 @@ export function isPrime(n: number): boolean {
   }
   return true;
 }
+
+/**
+ * nの異なる素因数の種類数を返す。
+ * 例：6 (=2×3) → 2、12 (=2²×3) → 2、30 (=2×3×5) → 3、2 (=2) → 1
+ * 用途：テーブルの「多様性」を評価。素因数が多いほど、相手の手札が生き残る可能性が高い
+ */
+export function countDistinctPrimeFactors(n: number): number {
+  if (n < 2) return 0;
+  let count = 0;
+  // 2で割り切れなくなるまで
+  if (n % 2 === 0) {
+    count++;
+    while (n % 2 === 0) n /= 2;
+  }
+  // 3以上の奇数で試す
+  for (let i = 3; i * i <= n; i += 2) {
+    if (n % i === 0) {
+      count++;
+      while (n % i === 0) n /= i;
+    }
+  }
+  // 残りが2以上なら、それは素数
+  if (n > 1) count++;
+  return count;
+}
+

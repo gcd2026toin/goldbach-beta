@@ -174,7 +174,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation }: FieldAreaPr
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 34,
   },
   tableTop: {
     width: "95%",
