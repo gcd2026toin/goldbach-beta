@@ -157,7 +157,7 @@ export function useTrophyEngine() {
         const wonAllGames = info.gameWinners.length > 0 && info.gameWinners.every((w) => w === HUMAN_PLAYER_ID);
         if (wonAllGames) toUnlock.push("perfect_set");
 
-        if (next.totalSetsWon >= THREE_SET_WINS_MILESTONE) toUnlock.push("five_sets");
+        if (next.totalSetsWon >= THREE_SET_WINS_MILESTONE) toUnlock.push("triple_sets");
 
         return unlock(toUnlock, next);
       });

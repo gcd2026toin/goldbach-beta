@@ -20,17 +20,27 @@ export const TROPHY_DEFS: TrophyDef[] = [
   {
     id: "set_win",
     title: "チャンピオン",
-    description: "1セット(3ゲーム)を制する",
+    description: "1セットを制する",
   },
   {
-    id: "perfect_set",
-    title: "パーフェクトゲーム",
-    description: "1セット中の3ゲームすべてに勝利する",
+    id: "triple_sets",
+    title: "常連プレイヤー",
+    description: "累計3セット勝利する",
   },
   {
     id: "composite_table_finish",
     title: "合成数の学者",
     description: "約数の多いテーブルであがり、高得点を得る",
+  },
+  {
+    id: "escape_win",
+    title: "逃げるが勝ち",
+    description: "2ゲーム目終了時点で同率含め1位につけ、3ゲーム目は素数のテーブルであがってセットを終える",
+  },
+  {
+    id: "perfect_set",
+    title: "パーフェクトゲーム",
+    description: "1セット中の3ゲームすべてに勝利する",
   },
   {
     id: "divisor_finish",
@@ -43,11 +53,6 @@ export const TROPHY_DEFS: TrophyDef[] = [
     description: "3枚の互いに素な組であがって勝利する",
   },
   {
-    id: "five_sets",
-    title: "常連プレイヤー",
-    description: "累計3セット勝利する",
-  },
-  {
     id: "beat_hard_bot",
     title: "上級討伐",
     description: "上級bot3体を相手にセットを制する",
@@ -58,15 +63,9 @@ export const TROPHY_DEFS: TrophyDef[] = [
     description: "1ゲームで100点以上を獲得する",
   },
   {
-    id: "no_pass_win",
-    title: "見敵必殺",
-    description: "一度もパスせずに1ゲームに勝利する",
-    hidden: true,
-  },
-  {
-    id: "escape_win",
-    title: "逃げるが勝ち",
-    description: "2ゲーム目終了時点で同率含め1位につけ、3ゲーム目は素数のテーブルであがってセットを終える",
+    id: "comeback_win",
+    title: "起死回生",
+    description: "1セット中のあるゲームを終えて最下位(同率含め)でありながら、そのセットを制する",
     hidden: true,
   },
   {
@@ -76,10 +75,10 @@ export const TROPHY_DEFS: TrophyDef[] = [
     hidden: true,
   },
   {
-    id: "comeback_win",
-    title: "起死回生",
-    description: "1セット中のあるゲームを終えて最下位(同率含め)でありながら、そのセットを制する",
-    hidden: true,
+    id: "no_pass_win",
+    title: "見敵必殺",
+    description: "一度もパスせずに1ゲームに勝利する",
+    hidden: true
   },
 ];
 
