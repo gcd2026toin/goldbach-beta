@@ -189,8 +189,7 @@ const styles = StyleSheet.create({
   tableTop: {
     width: "95%",
     maxWidth: 380,
-    height: 150, // コンパクト化: 190 → 150
-    paddingVertical: 12, // 減少: 18 → 12
+    paddingVertical: 14,
     paddingHorizontal: 10,
     borderBottomWidth: 5,
     alignItems: "center",
@@ -200,7 +199,6 @@ const styles = StyleSheet.create({
   tableContent: {
     alignItems: "center",
     justifyContent: "center",
-    flex: 1,
   },
   legsRow: {
     width: "95%",
@@ -235,18 +233,20 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   tableCaption: {
-    fontSize: 20, // 減少: 23 → 20
-    marginTop: 6, // 減少: 9 → 6
+    fontSize: 18,
+    marginTop: 6,
+    fontWeight: "700",
   },
   scoreCaption: {
-    fontSize: 18, // 減少: 20 → 18
-    marginTop: 4, // 減少: 6 → 4
+    fontSize: 16,
+    marginTop: 4,
+    fontWeight: "700",
   },
   captionSecondary: {
-    fontSize: 16, // 減少: 18 → 16
-    marginTop: 2, // 減少: 4 → 2
+    fontSize: 14,
+    marginTop: 2,
   },
   empty: {
-    fontSize: 18, // 減少: 20 → 18
+    fontSize: 16,
   },
 });
