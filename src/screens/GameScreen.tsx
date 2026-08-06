@@ -98,7 +98,7 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <TrophyUnlockToast trophies={trophyEngine.newlyUnlocked} onDismiss={trophyEngine.dismissNewlyUnlocked} />
       <View style={styles.topSection}>
-        <TopBar gameIndex={session.gameIndex} myScore={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} onBack={onExit} />
+        <TopBar gameIndex={session.gameIndex} onBack={onExit} />
         <OpponentRow bots={bots} state={session.state} cumulativeScores={session.cumulativeScores} forcedPassIds={session.forcedPassIds} />
       </View>
 
@@ -116,11 +116,7 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
         )}
       </View>
 
-      <UserScoreDisplay 
-        score={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} 
-        gamesWon={session.gameWinners.filter((id) => id === HUMAN_PLAYER_ID).length} 
-        gamesPlayed={session.gameIndex + 1} 
-      />
+      <UserScoreDisplay score={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} />
 
       <View style={styles.bottomSection}>
         <HandRow hand={human.hand} selected={session.selected} onToggle={session.toggleCard} disabled={!session.isHumanTurn} />

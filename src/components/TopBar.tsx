@@ -5,7 +5,6 @@ import { GAMES_PER_SET } from "../state/useGameSession";
 
 interface TopBarProps {
   gameIndex: number; // 0-indexed
-  myScore: number;
   onBack?: () => void;
 }
 
@@ -14,9 +13,8 @@ interface TopBarProps {
  * 1本の細いバーの中に収めることで画面を窮屈にしない設計。
  * スコア表示の右下に「?」ボタンを配置して、ルールモーダルを開く。
  */
-export function TopBar({ gameIndex, myScore, onBack }: TopBarProps) {
+export function TopBar({ gameIndex, onBack }: TopBarProps) {
   const theme = useTheme();
-  const scoreColor = myScore > 0 ? theme.colors.accentGold : myScore < 0 ? theme.colors.textSecondary : theme.colors.textPrimary;
 
   return (
     <View style={styles.row}>
@@ -28,22 +26,7 @@ export function TopBar({ gameIndex, myScore, onBack }: TopBarProps) {
         {gameIndex + 1}ゲーム目/{GAMES_PER_SET}ゲーム
       </Text>
 
-      <View style={styles.scoreSlot}>
-        <View style={[styles.scoreBadge, { borderColor: theme.colors.border }]}>
-          <Text style={{ color: theme.colors.textSecondary, fontSize: 18, fontFamily: theme.typography.body.fontFamily }}>あなた</Text>
-          <Text
-            style={{
-              color: scoreColor,
-              fontSize: 22,
-              fontWeight: "700",
-              fontFamily: theme.typography.numeral.fontFamily,
-              marginLeft: 5,
-            }}
-          >
-            {myScore > 0 ? `+${myScore}` : myScore}
-          </Text>
-        </View>
-      </View>
+      <View style={styles.sideSlot} />
     </View>
   );
 }
@@ -64,18 +47,5 @@ const styles = StyleSheet.create({
   },
   center: {
     fontSize: 19,
-  },
-  scoreSlot: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  scoreBadge: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    borderWidth: 0.8,
-    borderRadius: 14,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
   },
 });

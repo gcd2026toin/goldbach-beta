@@ -4,27 +4,32 @@ import { useTheme } from "../ThemeContext";
 
 interface UserScoreDisplayProps {
   score: number;
-  gamesWon: number;
-  gamesPlayed: number;
 }
 
-export function UserScoreDisplay({ score, gamesWon, gamesPlayed }: UserScoreDisplayProps) {
+/**
+ * TopBarから移動したユーザースコア表示
+ * 場のスコア表示と手札との間に配置される
+ */
+export function UserScoreDisplay({ score }: UserScoreDisplayProps) {
   const theme = useTheme();
   const scoreColor = score > 0 ? theme.colors.accentGold : score < 0 ? theme.colors.textSecondary : theme.colors.textPrimary;
 
   return (
     <View style={styles.container}>
-      <View style={styles.scoreRow}>
-        <Text style={[styles.label, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
-          あなたの成績
+      <View style={[styles.badge, { borderColor: theme.colors.border }]}>
+        <Text style={{ color: theme.colors.textSecondary, fontSize: 16, fontFamily: theme.typography.body.fontFamily }}>
+          あなた
         </Text>
-        <Text style={[styles.score, { color: scoreColor, fontFamily: theme.typography.numeral.fontFamily }]}>
+        <Text
+          style={{
+            color: scoreColor,
+            fontSize: 20,
+            fontWeight: "700",
+            fontFamily: theme.typography.numeral.fontFamily,
+            marginLeft: 6,
+          }}
+        >
           {score > 0 ? `+${score}` : score}
-        </Text>
-      </View>
-      <View style={styles.recordRow}>
-        <Text style={[styles.record, { color: theme.colors.textSecondary, fontFamily: theme.typography.numeral.fontFamily }]}>
-          {gamesWon} / {gamesPlayed}
         </Text>
       </View>
     </View>
@@ -34,25 +39,14 @@ export function UserScoreDisplay({ score, gamesWon, gamesPlayed }: UserScoreDisp
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginVertical: 12,
+    marginVertical: 10,
   },
-  scoreRow: {
+  badge: {
     flexDirection: "row",
+    borderWidth: 1.5,
+    borderRadius: 8,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
     alignItems: "center",
-    justifyContent: "center",
-    gap: 12,
-  },
-  label: {
-    fontSize: 14,
-  },
-  score: {
-    fontSize: 18,
-    fontWeight: "700",
-  },
-  recordRow: {
-    marginTop: 4,
-  },
-  record: {
-    fontSize: 13,
   },
 });
