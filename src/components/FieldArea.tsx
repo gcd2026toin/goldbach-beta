@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { Animated, Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../ThemeContext";
-import { CardFace } from "../cards/CardFace";
+import { CardFace, CardSize } from "../cards/CardFace";
 import { Card, FieldState } from "../engine/types";
 
 export interface PlayAnimationInfo {
@@ -27,6 +27,65 @@ interface FieldAreaProps {
  */
 export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress }: FieldAreaProps) {
   const theme = useTheme();
+  const [tableSizes, setTableSizes] = useState({
+    width: 360,
+    cardSize: "md" as CardSize,
+    fontSize: {
+      tableCaption: 18,
+      scoreCaption: 16,
+      captionSecondary: 14,
+      empty: 16,
+    },
+  });
+
+  // ブラウザ幅に応じてテーブルサイズを動的に設定
+  useEffect(() => {
+    const updateSizes = () => {
+      const screenWidth = Dimensions.get("window").width;
+      const padding = 32; // 左右パディング (16 × 2)
+      const availableWidth = screenWidth - padding;
+      const maxTableWidth = 380;
+      const tableWidth = Math.min(availableWidth, maxTableWidth);
+
+      // ビューポート幅に応じてカードサイズとフォントサイズを決定
+      let cardSize: "sm" | "md" | "lg" = "md";
+      let fontSizeMultiplier = 1;
+
+      if (screenWidth < 400) {
+        // 小画面（スマートフォン: 360px）
+        cardSize = "sm";
+        fontSizeMultiplier = 0.85;
+      } else if (screenWidth < 600) {
+        // 中程度（タブレット小: 480px）
+        cardSize = "md";
+        fontSizeMultiplier = 0.95;
+      } else if (screenWidth < 900) {
+        // 中程度大（タブレット: 768px）
+        cardSize = "md";
+        fontSizeMultiplier = 1.1;
+      } else {
+        // 大画面（デスクトップ: 1024px+）
+        cardSize = "lg";
+        fontSizeMultiplier = 1.2;
+      }
+
+      setTableSizes({
+        width: tableWidth,
+        cardSize,
+        fontSize: {
+          tableCaption: Math.round(18 * fontSizeMultiplier),
+          scoreCaption: Math.round(16 * fontSizeMultiplier),
+          captionSecondary: Math.round(14 * fontSizeMultiplier),
+          empty: Math.round(16 * fontSizeMultiplier),
+        },
+      });
+    };
+
+    updateSizes();
+    const subscription = Dimensions.addEventListener("change", updateSizes);
+    return () => subscription?.remove();
+  }, []);
+
   const showingSnapshot = field.cards.length === 0 && !!clearedSnapshot && clearedSnapshot.length > 0;
   const displayCards = field.cards.length > 0 ? field.cards : showingSnapshot ? clearedSnapshot! : [];
 
@@ -107,7 +166,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
       >
         <View style={styles.tableContent}>
           {displayCards.length === 0 ? (
-            <Text style={[styles.empty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
+            <Text style={[styles.empty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, fontSize: tableSizes.fontSize.empty }]}>
               場が空です
             </Text>
           ) : (
@@ -122,7 +181,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
                 ]}
               >
                 {displayCards.map((c, i) => (
-                  <CardFace key={`${c.suit}-${c.rank}-${i}`} rank={c.rank} suit={c.suit} size="md" />
+                  <CardFace key={`${c.suit}-${c.rank}-${i}`} rank={c.rank} suit={c.suit} size={tableSizes.cardSize} />
                 ))}
               </Animated.View>
               <Text
@@ -134,6 +193,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
                     fontFamily: theme.typography.numeral.fontFamily,
                     fontWeight: "700",
                     opacity: field.cards.length > 0 ? 1 : 0,
+                    fontSize: tableSizes.fontSize.tableCaption,
                   },
                 ]}
               >
@@ -142,7 +202,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
               <Text
                 style={[
                   styles.captionSecondary,
-                  { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, opacity: showingSnapshot ? 1 : 0 },
+                  { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, opacity: showingSnapshot ? 1 : 0, fontSize: tableSizes.fontSize.captionSecondary },
                 ]}
               >
                 {showingSnapshot ? "場が流れました" : "\u00A0"}
@@ -172,6 +232,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
             fontFamily: theme.typography.numeral.fontFamily,
             fontWeight: "700",
             opacity: field.cards.length > 0 ? 1 : 0,
+            fontSize: tableSizes.fontSize.scoreCaption,
           },
         ]}
       >
@@ -187,8 +248,7 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   tableTop: {
-    width: "95%",
-    maxWidth: 380,
+    width: "100%",
     paddingVertical: 14,
     paddingHorizontal: 10,
     borderBottomWidth: 5,
@@ -201,8 +261,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   legsRow: {
-    width: "95%",
-    maxWidth: 380,
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 22,
@@ -233,20 +292,17 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   tableCaption: {
-    fontSize: 18,
     marginTop: 6,
     fontWeight: "700",
   },
   scoreCaption: {
-    fontSize: 16,
     marginTop: 4,
     fontWeight: "700",
   },
   captionSecondary: {
-    fontSize: 14,
     marginTop: 2,
   },
   empty: {
-    fontSize: 16,
+    // fontSize は動的に設定
   },
 });
