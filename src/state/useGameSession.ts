@@ -222,6 +222,7 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
           const next = forceSkipLead(state);
           setState(next);
           finalizeGameIfNeeded(next); // デッドロック終了はあがりではないため遅延しない
+          processingRef.current = false;
         } else {
           const result = applyAction(state, state.currentPlayerId, action);
           if (action.type === "pass") {
@@ -232,16 +233,15 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
           if (result.fieldWasReset) flashClearedField(result.state.lastClearedField);
           
           // 手番切り替わり後に1秒の間隔を挿入
-          const nextPlayerReadyTimer = setTimeout(() => {
+          setTimeout(() => {
             setState(result.state);
             setSelected([]);
             scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS); // あがりが発生していれば2秒後に結果表示
             processingRef.current = false;
           }, TURN_TRANSITION_DELAY_MS);
           
-          return () => clearTimeout(nextPlayerReadyTimer);
+          // 内側のsetTimeoutはeffectのクリーンアップ対象外なので、外側のreturnには含めない
         }
-        processingRef.current = false;
       }, BOT_THINK_DELAY_MS);
       return () => clearTimeout(timer);
     }
@@ -255,14 +255,14 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
         setHumanPassedThisGame(true);
         
         // 手番切り替わり後に1秒の間隔を挿入
-        const nextPlayerReadyTimer = setTimeout(() => {
+        setTimeout(() => {
           setState(result.state);
           setSelected([]);
           finalizeGameIfNeeded(result.state);
           processingRef.current = false;
         }, TURN_TRANSITION_DELAY_MS);
         
-        return () => clearTimeout(nextPlayerReadyTimer);
+        // 内側のsetTimeoutはeffectのクリーンアップ対象外なので、外側のreturnには含めない
       }, HUMAN_AUTO_PASS_DELAY_MS);
       return () => clearTimeout(timer);
     }

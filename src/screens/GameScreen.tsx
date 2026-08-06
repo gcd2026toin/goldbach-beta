@@ -10,6 +10,7 @@ import { ActionBar } from "../components/ActionBar";
 import { RoundSummaryOverlay } from "../components/RoundSummaryOverlay";
 import { TrophyUnlockToast } from "../components/TrophyUnlockToast";
 import { RulesModal } from "../components/RulesModal";
+import { UserScoreDisplay } from "../components/UserScoreDisplay";
 import { SetSummaryScreen } from "./SetSummaryScreen";
 import { PlayerConfig, useGameSession, HUMAN_PLAYER_ID, GAMES_PER_SET } from "../state/useGameSession";
 import { TrophyEngine } from "../trophies/useTrophyEngine";
@@ -114,6 +115,12 @@ export function GameScreen({ players, onExit, trophyEngine }: GameScreenProps) {
           </Text>
         )}
       </View>
+
+      <UserScoreDisplay 
+        score={session.cumulativeScores[HUMAN_PLAYER_ID] ?? 0} 
+        gamesWon={session.gameWinners.filter((id) => id === HUMAN_PLAYER_ID).length} 
+        gamesPlayed={session.gameIndex + 1} 
+      />
 
       <View style={styles.bottomSection}>
         <HandRow hand={human.hand} selected={session.selected} onToggle={session.toggleCard} disabled={!session.isHumanTurn} />
