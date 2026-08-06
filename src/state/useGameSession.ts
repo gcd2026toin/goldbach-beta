@@ -39,6 +39,7 @@ const FORCE_SKIP_DELAY_MS = 300; // 場が空でリードすら作れない特�
 const AGARI_DISCARD_DELAY_MS = 1000; // あがりが発生してから、互いに素な手札を全員が捨てるまでの間
 const RESULT_REVEAL_DELAY_MS = 2000; // あがりが発生してから、結果(リザルト)を表示するまでの間
 const CLEARED_FIELD_DISPLAY_MS = 1300; // 場が流れた直後、直前の手を表示し続ける時間
+const TURN_TRANSITION_DELAY_MS = 1000; // あるプレイヤーの手番から次のプレイヤーの手番に移行するまでの間
 
 function cardKey(c: Card): string {
   return `${c.suit}-${c.rank}`;
@@ -229,9 +230,16 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
             triggerPlayAnimation(state.currentPlayerId);
           }
           if (result.fieldWasReset) flashClearedField(result.state.lastClearedField);
-          setState(result.state);
-          setSelected([]);
-          scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS); // あがりが発生していれば2秒後に結果表示
+          
+          // 手番切り替わり後に1秒の間隔を挿入
+          const nextPlayerReadyTimer = setTimeout(() => {
+            setState(result.state);
+            setSelected([]);
+            scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS); // あがりが発生していれば2秒後に結果表示
+            processingRef.current = false;
+          }, TURN_TRANSITION_DELAY_MS);
+          
+          return () => clearTimeout(nextPlayerReadyTimer);
         }
         processingRef.current = false;
       }, BOT_THINK_DELAY_MS);
@@ -245,10 +253,16 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
         const result = applyAction(state, state.currentPlayerId, { type: "pass" });
         setForcedPassIds((prev) => new Set(prev).add(HUMAN_PLAYER_ID));
         setHumanPassedThisGame(true);
-        setState(result.state);
-        setSelected([]);
-        finalizeGameIfNeeded(result.state);
-        processingRef.current = false;
+        
+        // 手番切り替わり後に1秒の間隔を挿入
+        const nextPlayerReadyTimer = setTimeout(() => {
+          setState(result.state);
+          setSelected([]);
+          finalizeGameIfNeeded(result.state);
+          processingRef.current = false;
+        }, TURN_TRANSITION_DELAY_MS);
+        
+        return () => clearTimeout(nextPlayerReadyTimer);
       }, HUMAN_AUTO_PASS_DELAY_MS);
       return () => clearTimeout(timer);
     }
