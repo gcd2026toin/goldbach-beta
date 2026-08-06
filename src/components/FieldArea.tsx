@@ -29,6 +29,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
   const theme = useTheme();
   const [tableSizes, setTableSizes] = useState({
     width: 360,
+    height: 160,
     cardSize: "md" as CardSize,
     fontSize: {
       tableCaption: 18,
@@ -50,27 +51,33 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
       // ビューポート幅に応じてカードサイズとフォントサイズを決定
       let cardSize: "sm" | "md" | "lg" = "md";
       let fontSizeMultiplier = 1;
+      let tableHeight = 160;
 
       if (screenWidth < 400) {
         // 小画面（スマートフォン: 360px）
         cardSize = "sm";
         fontSizeMultiplier = 0.85;
+        tableHeight = 130;
       } else if (screenWidth < 600) {
         // 中程度（タブレット小: 480px）
         cardSize = "md";
         fontSizeMultiplier = 0.95;
+        tableHeight = 145;
       } else if (screenWidth < 900) {
         // 中程度大（タブレット: 768px）
         cardSize = "md";
         fontSizeMultiplier = 1.1;
+        tableHeight = 160;
       } else {
         // 大画面（デスクトップ: 1024px+）
         cardSize = "lg";
         fontSizeMultiplier = 1.2;
+        tableHeight = 180;
       }
 
       setTableSizes({
         width: tableWidth,
+        height: tableHeight,
         cardSize,
         fontSize: {
           tableCaption: Math.round(18 * fontSizeMultiplier),
@@ -155,6 +162,7 @@ export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress 
         style={[
           styles.tableTop,
           {
+            height: tableSizes.height,
             backgroundColor: theme.colors.felt,
             borderTopLeftRadius: theme.radius.panel,
             borderTopRightRadius: theme.radius.panel,
