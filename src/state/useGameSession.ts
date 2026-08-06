@@ -39,7 +39,7 @@ const FORCE_SKIP_DELAY_MS = 300; // 場が空でリードすら作れない特�
 const AGARI_DISCARD_DELAY_MS = 1000; // あがりが発生してから、互いに素な手札を全員が捨てるまでの間
 const RESULT_REVEAL_DELAY_MS = 2000; // あがりが発生してから、結果(リザルト)を表示するまでの間
 const CLEARED_FIELD_DISPLAY_MS = 1300; // 場が流れた直後、直前の手を表示し続ける時間
-const TURN_TRANSITION_DELAY_MS = 1000; // あるプレイヤーの手番から次のプレイヤーの手番に移行するまでの間
+const PASS_DISPLAY_DELAY_MS = 800; // パス状態を画面に表示し続ける時間（スキップが見える）
 
 function cardKey(c: Card): string {
   return `${c.suit}-${c.rank}`;
@@ -227,20 +227,21 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
           const result = applyAction(state, state.currentPlayerId, action);
           if (action.type === "pass") {
             setForcedPassIds((prev) => new Set(prev).add(state.currentPlayerId));
+            // パス状態を一定時間表示してから次の手番へ
+            setTimeout(() => {
+              setState(result.state);
+              setSelected([]);
+              scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS);
+              processingRef.current = false;
+            }, PASS_DISPLAY_DELAY_MS);
           } else {
             triggerPlayAnimation(state.currentPlayerId);
-          }
-          if (result.fieldWasReset) flashClearedField(result.state.lastClearedField);
-          
-          // 手番切り替わり後に1秒の間隔を挿入
-          setTimeout(() => {
+            if (result.fieldWasReset) flashClearedField(result.state.lastClearedField);
             setState(result.state);
             setSelected([]);
-            scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS); // あがりが発生していれば2秒後に結果表示
+            scheduleFinalize(result.state, RESULT_REVEAL_DELAY_MS);
             processingRef.current = false;
-          }, TURN_TRANSITION_DELAY_MS);
-          
-          // 内側のsetTimeoutはeffectのクリーンアップ対象外なので、外側のreturnには含めない
+          }
         }
       }, BOT_THINK_DELAY_MS);
       return () => clearTimeout(timer);
@@ -254,15 +255,13 @@ export function useGameSession(playerConfigs: PlayerConfig[], isPaused: boolean 
         setForcedPassIds((prev) => new Set(prev).add(HUMAN_PLAYER_ID));
         setHumanPassedThisGame(true);
         
-        // 手番切り替わり後に1秒の間隔を挿入
+        // パス状態を一定時間表示してから次の手番へ
         setTimeout(() => {
           setState(result.state);
           setSelected([]);
           finalizeGameIfNeeded(result.state);
           processingRef.current = false;
-        }, TURN_TRANSITION_DELAY_MS);
-        
-        // 内側のsetTimeoutはeffectのクリーンアップ対象外なので、外側のreturnには含めない
+        }, PASS_DISPLAY_DELAY_MS);
       }, HUMAN_AUTO_PASS_DELAY_MS);
       return () => clearTimeout(timer);
     }
