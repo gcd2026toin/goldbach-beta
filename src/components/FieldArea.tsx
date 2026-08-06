@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import { Animated, Pressable, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "../ThemeContext";
 import { CardFace } from "../cards/CardFace";
 import { Card, FieldState } from "../engine/types";
@@ -14,6 +14,7 @@ interface FieldAreaProps {
   field: FieldState;
   clearedSnapshot: Card[] | null;
   playAnimation: PlayAnimationInfo | null;
+  onRulesPress?: () => void;
 }
 
 /**
@@ -24,7 +25,7 @@ interface FieldAreaProps {
  * 場が流れて空になった直後は、直前まで場にあった手を一瞬だけ薄く表示し続ける。
  * カードが出されるたびに、出した人がいる方向からカードが飛んでくるアニメーションを再生する。
  */
-export function FieldArea({ field, clearedSnapshot, playAnimation }: FieldAreaProps) {
+export function FieldArea({ field, clearedSnapshot, playAnimation, onRulesPress }: FieldAreaProps) {
   const theme = useTheme();
   const showingSnapshot = field.cards.length === 0 && !!clearedSnapshot && clearedSnapshot.length > 0;
   const displayCards = field.cards.length > 0 ? field.cards : showingSnapshot ? clearedSnapshot! : [];
@@ -104,48 +105,57 @@ export function FieldArea({ field, clearedSnapshot, playAnimation }: FieldAreaPr
           },
         ]}
       >
-        {displayCards.length === 0 ? (
-          <Text style={[styles.empty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
-            場が空です
-          </Text>
-        ) : (
-          <>
-            <Animated.View
-              style={[
-                styles.cardsRow,
-                {
-                  opacity: Animated.multiply(opacity, dimOpacity),
-                  transform: anim.getTranslateTransform(),
-                },
-              ]}
-            >
-              {displayCards.map((c, i) => (
-                <CardFace key={`${c.suit}-${c.rank}-${i}`} rank={c.rank} suit={c.suit} size="md" />
-              ))}
-            </Animated.View>
-            <Text
-              numberOfLines={1}
-              style={[
-                styles.tableCaption,
-                {
-                  color: theme.colors.textPrimary,
-                  fontFamily: theme.typography.numeral.fontFamily,
-                  fontWeight: "700",
-                  opacity: field.cards.length > 0 ? 1 : 0,
-                },
-              ]}
-            >
-              {field.cards.length > 0 ? `テーブル ${field.table}` : "\u00A0"}
+        <View style={styles.tableContent}>
+          {displayCards.length === 0 ? (
+            <Text style={[styles.empty, { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily }]}>
+              場が空です
             </Text>
-            <Text
-              style={[
-                styles.captionSecondary,
-                { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, opacity: showingSnapshot ? 1 : 0 },
-              ]}
-            >
-              {showingSnapshot ? "場が流れました" : "\u00A0"}
-            </Text>
-          </>
+          ) : (
+            <>
+              <Animated.View
+                style={[
+                  styles.cardsRow,
+                  {
+                    opacity: Animated.multiply(opacity, dimOpacity),
+                    transform: anim.getTranslateTransform(),
+                  },
+                ]}
+              >
+                {displayCards.map((c, i) => (
+                  <CardFace key={`${c.suit}-${c.rank}-${i}`} rank={c.rank} suit={c.suit} size="md" />
+                ))}
+              </Animated.View>
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.tableCaption,
+                  {
+                    color: theme.colors.textPrimary,
+                    fontFamily: theme.typography.numeral.fontFamily,
+                    fontWeight: "700",
+                    opacity: field.cards.length > 0 ? 1 : 0,
+                  },
+                ]}
+              >
+                {field.cards.length > 0 ? `テーブル ${field.table}` : "\u00A0"}
+              </Text>
+              <Text
+                style={[
+                  styles.captionSecondary,
+                  { color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, opacity: showingSnapshot ? 1 : 0 },
+                ]}
+              >
+                {showingSnapshot ? "場が流れました" : "\u00A0"}
+              </Text>
+            </>
+          )}
+        </View>
+
+        {/* ルールボタンをテーブルの右上に配置 */}
+        {onRulesPress && (
+          <Pressable onPress={onRulesPress} hitSlop={8} style={styles.rulesButton}>
+            <Text style={[styles.rulesButtonText, { color: theme.colors.accentGold }]}>?</Text>
+          </Pressable>
         )}
       </View>
 
@@ -174,17 +184,23 @@ export function FieldArea({ field, clearedSnapshot, playAnimation }: FieldAreaPr
 const styles = StyleSheet.create({
   wrapper: {
     alignItems: "center",
-    marginBottom: 34,
+    marginBottom: 4,
   },
   tableTop: {
     width: "95%",
     maxWidth: 380,
-    height: 200, // 内容によらず常に最大サイズで固定し、枠が動いたり縮んだりしないようにする
-    paddingVertical: 18,
+    height: 150, // コンパクト化: 190 → 150
+    paddingVertical: 12, // 減少: 18 → 12
     paddingHorizontal: 10,
     borderBottomWidth: 5,
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
+  },
+  tableContent: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
   legsRow: {
     width: "95%",
@@ -203,19 +219,34 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
   },
+  rulesButton: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    borderWidth: 0.7,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  rulesButtonText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
   tableCaption: {
-    fontSize: 23,
-    marginTop: 9,
+    fontSize: 20, // 減少: 23 → 20
+    marginTop: 6, // 減少: 9 → 6
   },
   scoreCaption: {
-    fontSize: 20,
-    marginTop: 6,
+    fontSize: 18, // 減少: 20 → 18
+    marginTop: 4, // 減少: 6 → 4
   },
   captionSecondary: {
-    fontSize: 18,
-    marginTop: 4,
+    fontSize: 16, // 減少: 18 → 16
+    marginTop: 2, // 減少: 4 → 2
   },
   empty: {
-    fontSize: 20,
+    fontSize: 18, // 減少: 20 → 18
   },
 });
