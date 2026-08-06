@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginBottom: 48,
+    marginBottom: 88,
   },
   item: {
     alignItems: "center",
