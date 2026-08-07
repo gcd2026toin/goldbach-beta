@@ -104,8 +104,9 @@ export function useTrophyEngine() {
         // 2ゲーム目が終わった時点の順位を、3ゲーム目終了時の判定のために記録しておく
         if (info.gameIndex === 1) {
           const humanScore = info.cumulativeScoresAfterThisGame[HUMAN_PLAYER_ID] ?? 0;
+          // 逃げるが勝ち: 2ゲーム目終了時点で「同率を含めない」1位（他の全員より上）
           tiedOrFirstAfterGame2Ref.current = Object.entries(info.cumulativeScoresAfterThisGame).every(
-            ([pid, score]) => Number(pid) === HUMAN_PLAYER_ID || score <= humanScore
+            ([pid, score]) => Number(pid) === HUMAN_PLAYER_ID || score < humanScore
           );
         }
 
@@ -115,10 +116,11 @@ export function useTrophyEngine() {
         }
         {
           const humanScore = info.cumulativeScoresAfterThisGame[HUMAN_PLAYER_ID] ?? 0;
-          const isLastOrTied = Object.entries(info.cumulativeScoresAfterThisGame).every(
-            ([pid, score]) => Number(pid) === HUMAN_PLAYER_ID || score >= humanScore
+          // 起死回生: あるゲーム終了時点で「同率を含めない」最下位（他の全員より下）
+          const isStrictlyLast = Object.entries(info.cumulativeScoresAfterThisGame).every(
+            ([pid, score]) => Number(pid) === HUMAN_PLAYER_ID || score > humanScore
           );
-          if (isLastOrTied) wasLastPlaceAtSomePointRef.current = true;
+          if (isStrictlyLast) wasLastPlaceAtSomePointRef.current = true;
         }
 
         // setStateの更新関数はReactの仕様上、開発モードなどで複数回呼ばれることがあるため、
@@ -157,7 +159,7 @@ export function useTrophyEngine() {
         const wonAllGames = info.gameWinners.length > 0 && info.gameWinners.every((w) => w === HUMAN_PLAYER_ID);
         if (wonAllGames) toUnlock.push("perfect_set");
 
-        if (next.totalSetsWon >= THREE_SET_WINS_MILESTONE) toUnlock.push("triple_sets");
+        if (next.totalSetsWon >= THREE_SET_WINS_MILESTONE) toUnlock.push("five_sets");
 
         return unlock(toUnlock, next);
       });
