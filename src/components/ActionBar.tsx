@@ -46,7 +46,7 @@ export function ActionBar({
           </Text>
         )}
         <Text style={{ color: theme.colors.textSecondary, fontFamily: theme.typography.body.fontFamily, fontSize: 23 }}>
-          {isForcedPassPending ? "出せる手がないためパスします…" : `${currentPlayerName}の番です…`}
+          {isForcedPassPending ? "パスしました…" : `${currentPlayerName}の番です…`}
         </Text>
       </View>
     );

@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
   },
   tableCaption: {
     marginTop: 6,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   scoreCaption: {
     marginTop: 4,
-    fontWeight: "700",
+    fontWeight: "800",
   },
   captionSecondary: {
     marginTop: 2,
