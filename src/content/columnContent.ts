@@ -10,7 +10,7 @@ export interface ColumnSection {
 export const COLUMN_TITLE = "「ゴールドバッハ」の真髄";
 
 // 後でREADMEが完成したら、このURLをREADMEのURLに切り替える
-export const GITHUB_REPO_URL = "https://github.com/gcd2026toin/goldbach-cardgame";
+export const GITHUB_REPO_URL = "https://github.com/gcd2026toin/goldbach-cardgame/tree/main#%E3%82%B4%E3%83%BC%E3%83%AB%E3%83%89%E3%83%90%E3%83%83%E3%83%8F";
 
 export const COLUMN_SECTIONS: ColumnSection[] = [
   {
